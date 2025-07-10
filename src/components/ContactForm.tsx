@@ -126,7 +126,7 @@ Aguardo retorno. Obrigado(a)!`;
           </CardHeader>
           
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
               {/* Nome Completo */}
               <div className="space-y-2">
                 <Label htmlFor="fullName" className="flex items-center gap-2">
