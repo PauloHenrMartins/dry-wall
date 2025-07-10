@@ -67,8 +67,8 @@ Gostaria de solicitar um orçamento para o seguinte projeto de drywall:
 
 Aguardo retorno. Obrigado(a)!`;
 
-      // Número do WhatsApp da empresa (substituir pelo número real)
-      const whatsappNumber = "5511999999999"; // Exemplo
+      // Número do WhatsApp da empresa
+      const whatsappNumber = "5511945154082";
       const encodedMessage = encodeURIComponent(message);
       const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
@@ -242,7 +242,7 @@ Aguardo retorno. Obrigado(a)!`;
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-accent to-accent-glow hover:from-accent-glow hover:to-accent shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] animate-pulse-glow"
+                className="w-full h-12 md:h-14 text-sm md:text-lg font-semibold bg-gradient-to-r from-accent to-accent-glow hover:from-accent-glow hover:to-accent shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
               >
                 {isSubmitting ? (
                   <div className="flex items-center gap-2">

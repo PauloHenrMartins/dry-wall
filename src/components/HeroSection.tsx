@@ -14,11 +14,6 @@ const HeroSection = () => {
           <span className="font-semibold text-accent">24h</span>
         </p>
         
-        <div className="animate-scale-in">
-          <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-accent to-accent-glow text-accent-foreground rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-            ✨ Profissionais especializados há mais de 10 anos
-          </div>
-        </div>
       </div>
     </section>
   );
