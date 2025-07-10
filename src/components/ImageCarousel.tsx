@@ -1,46 +1,34 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ChevronLeft, ChevronRight, Image as ImageIcon } from "lucide-react";
 
-// Placeholder para as imagens que serão fornecidas
 const placeholderImages = [
   {
     id: 1,
-    url: "/api/placeholder/600/400",
-    alt: "Projeto Drywall - Forro"
+    url: "/images/img1.webp",
+    alt: "Projeto Drywall 1",
   },
   {
-    id: 2, 
-    url: "/api/placeholder/600/400",
-    alt: "Projeto Drywall - Parede"
+    id: 2,
+    url: "/images/img2.webp",
+    alt: "Projeto Drywall 2",
   },
   {
     id: 3,
-    url: "/api/placeholder/600/400", 
-    alt: "Projeto Drywall - Nicho"
-  }
+    url: "/images/img3.webp",
+    alt: "Projeto Drywall 3",
+  },
 ];
 
 const ImageCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [images] = useState(placeholderImages);
-
-  // Auto slide
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => 
-        prevIndex === images.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 4000);
-
-    return () => clearInterval(timer);
-  }, [images.length]);
+  const images = placeholderImages;
 
   const goToPrevious = () => {
-    setCurrentIndex(currentIndex === 0 ? images.length - 1 : currentIndex - 1);
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
   const goToNext = () => {
-    setCurrentIndex(currentIndex === images.length - 1 ? 0 : currentIndex + 1);
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -56,27 +44,32 @@ const ImageCarousel = () => {
         </div>
 
         <div className="relative">
-          {/* Main carousel container */}
+          {/* Container principal do carrossel */}
           <div className="relative bg-card rounded-3xl shadow-xl overflow-hidden">
-            <div className="relative h-[400px] md:h-[500px]">
+            <div className="relative w-full max-w-4xl h-[400px] md:h-[500px] mx-auto">
               {images.length > 0 ? (
                 images.map((image, index) => (
                   <div
                     key={image.id}
-                    className={`absolute inset-0 transition-opacity duration-500 ${
-                      index === currentIndex ? 'opacity-100' : 'opacity-0'
+                    className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                      index === currentIndex
+                        ? "opacity-100 visible pointer-events-auto"
+                        : "opacity-0 invisible pointer-events-none"
                     }`}
+                    aria-hidden={index !== currentIndex}
                   >
                     <img
                       src={image.url}
                       alt={image.alt}
+                      width={800} // Definindo largura fixa
+                      height={500} // Definindo altura fixa
                       className="w-full h-full object-cover"
+                      loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                   </div>
                 ))
               ) : (
-                // Placeholder quando não há imagens
                 <div className="absolute inset-0 flex items-center justify-center bg-muted">
                   <div className="text-center text-muted-foreground">
                     <ImageIcon className="w-16 h-16 mx-auto mb-4 opacity-50" />
@@ -86,26 +79,35 @@ const ImageCarousel = () => {
               )}
             </div>
 
-            {/* Navigation buttons */}
+            {/* Botões de navegação */}
             {images.length > 1 && (
               <>
                 <button
                   onClick={goToPrevious}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 
+    bg-white/90 dark:bg-gray-700 dark:bg-opacity-80 
+    rounded-full shadow-lg flex items-center justify-center 
+    transition-all duration-300 hover:scale-110"
+                  aria-label="Imagem anterior"
                 >
-                  <ChevronLeft className="w-6 h-6 text-foreground" />
+                  <ChevronLeft className="w-6 h-6 text-foreground dark:text-white" />
                 </button>
+
                 <button
                   onClick={goToNext}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 
+    bg-white/90 dark:bg-gray-700 dark:bg-opacity-80
+    rounded-full shadow-lg flex items-center justify-center 
+    transition-all duration-300 hover:scale-110"
+                  aria-label="Próxima imagem"
                 >
-                  <ChevronRight className="w-6 h-6 text-foreground" />
+                  <ChevronRight className="w-6 h-6 text-foreground dark:text-white" />
                 </button>
               </>
             )}
           </div>
 
-          {/* Dots indicator */}
+          {/* Indicadores de pontos */}
           {images.length > 1 && (
             <div className="flex justify-center mt-6 space-x-2">
               {images.map((_, index) => (
@@ -114,9 +116,10 @@ const ImageCarousel = () => {
                   onClick={() => setCurrentIndex(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
                     index === currentIndex
-                      ? 'bg-primary shadow-lg scale-125'
-                      : 'bg-border hover:bg-muted-foreground'
+                      ? "bg-primary shadow-lg scale-125"
+                      : "bg-border hover:bg-muted-foreground"
                   }`}
+                  aria-label={`Ir para imagem ${index + 1}`}
                 />
               ))}
             </div>

@@ -3,9 +3,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, User, MapPin, MessageCircle, Send, Sparkles } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Phone,
+  User,
+  MapPin,
+  MessageCircle,
+  Send,
+  Sparkles,
+} from "lucide-react";
 import { brazilStates, serviceTypes } from "@/data/brazilData";
 import { useToast } from "@/hooks/use-toast";
 
@@ -25,28 +44,36 @@ const ContactForm = () => {
     state: "",
     city: "",
     serviceType: "",
-    description: ""
+    description: "",
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [availableCities, setAvailableCities] = useState<string[]>([]);
   const { toast } = useToast();
 
   const handleStateChange = (selectedState: string) => {
-    setFormData(prev => ({ ...prev, state: selectedState, city: "" }));
-    const stateData = brazilStates.find(state => state.name === selectedState);
+    setFormData((prev) => ({ ...prev, state: selectedState, city: "" }));
+    const stateData = brazilStates.find(
+      (state) => state.name === selectedState
+    );
     setAvailableCities(stateData?.cities || []);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validação
-    if (!formData.fullName || !formData.phone || !formData.state || !formData.city || !formData.serviceType) {
+    if (
+      !formData.fullName ||
+      !formData.phone ||
+      !formData.state ||
+      !formData.city ||
+      !formData.serviceType
+    ) {
       toast({
         title: "Campos obrigatórios",
         description: "Por favor, preencha todos os campos obrigatórios.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -55,15 +82,17 @@ const ContactForm = () => {
 
     try {
       // Montar mensagem para WhatsApp
-      const message = `Olá! Meu nome é ${formData.fullName}, sou de ${formData.city} - ${formData.state}.
+      const message = `Olá! Meu nome é ${formData.fullName}, sou de ${
+        formData.city
+      } - ${formData.state}.
 
 Meu telefone para contato é: ${formData.phone}
 
 Gostaria de solicitar um orçamento para o seguinte projeto de drywall:
 
-"${formData.serviceType}"
+${formData.serviceType}
 
-"${formData.description || 'Sem descrição adicional'}"
+${formData.description || "Sem descrição adicional"}
 
 Aguardo retorno. Obrigado(a)!`;
 
@@ -73,11 +102,12 @@ Aguardo retorno. Obrigado(a)!`;
       const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
       // Abrir WhatsApp
-      window.open(whatsappURL, '_blank');
+      window.open(whatsappURL, "_blank");
 
       toast({
         title: "Redirecionando para o WhatsApp",
-        description: "Você será redirecionado para enviar sua mensagem via WhatsApp.",
+        description:
+          "Você será redirecionado para enviar sua mensagem via WhatsApp.",
       });
 
       // Limpar formulário após sucesso
@@ -87,15 +117,15 @@ Aguardo retorno. Obrigado(a)!`;
         state: "",
         city: "",
         serviceType: "",
-        description: ""
+        description: "",
       });
       setAvailableCities([]);
-
     } catch (error) {
       toast({
         title: "Erro",
-        description: "Ocorreu um erro ao processar sua solicitação. Tente novamente.",
-        variant: "destructive"
+        description:
+          "Ocorreu um erro ao processar sua solicitação. Tente novamente.",
+        variant: "destructive",
       });
     } finally {
       setIsSubmitting(false);
@@ -124,7 +154,7 @@ Aguardo retorno. Obrigado(a)!`;
               Todos os campos são obrigatórios para um atendimento personalizado
             </CardDescription>
           </CardHeader>
-          
+
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Nome Completo */}
@@ -136,7 +166,12 @@ Aguardo retorno. Obrigado(a)!`;
                 <Input
                   id="fullName"
                   value={formData.fullName}
-                  onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      fullName: e.target.value,
+                    }))
+                  }
                   placeholder="Digite seu nome completo"
                   className="h-12"
                   required
@@ -152,7 +187,9 @@ Aguardo retorno. Obrigado(a)!`;
                 <Input
                   id="phone"
                   value={formData.phone}
-                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, phone: e.target.value }))
+                  }
                   placeholder="(11) 99999-9999"
                   className="h-12"
                   required
@@ -166,7 +203,11 @@ Aguardo retorno. Obrigado(a)!`;
                     <MapPin className="w-4 h-4" />
                     Estado
                   </Label>
-                  <Select value={formData.state} onValueChange={handleStateChange} required>
+                  <Select
+                    value={formData.state}
+                    onValueChange={handleStateChange}
+                    required
+                  >
                     <SelectTrigger className="h-12">
                       <SelectValue placeholder="Selecione o estado" />
                     </SelectTrigger>
@@ -182,9 +223,11 @@ Aguardo retorno. Obrigado(a)!`;
 
                 <div className="space-y-2">
                   <Label>Cidade</Label>
-                  <Select 
-                    value={formData.city} 
-                    onValueChange={(value) => setFormData(prev => ({ ...prev, city: value }))}
+                  <Select
+                    value={formData.city}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({ ...prev, city: value }))
+                    }
                     disabled={!formData.state}
                     required
                   >
@@ -205,9 +248,11 @@ Aguardo retorno. Obrigado(a)!`;
               {/* Tipo de Serviço */}
               <div className="space-y-2">
                 <Label>Tipo de Serviço</Label>
-                <Select 
-                  value={formData.serviceType} 
-                  onValueChange={(value) => setFormData(prev => ({ ...prev, serviceType: value }))}
+                <Select
+                  value={formData.serviceType}
+                  onValueChange={(value) =>
+                    setFormData((prev) => ({ ...prev, serviceType: value }))
+                  }
                   required
                 >
                   <SelectTrigger className="h-12">
@@ -225,14 +270,22 @@ Aguardo retorno. Obrigado(a)!`;
 
               {/* Descrição */}
               <div className="space-y-2">
-                <Label htmlFor="description" className="flex items-center gap-2">
+                <Label
+                  htmlFor="description"
+                  className="flex items-center gap-2"
+                >
                   <MessageCircle className="w-4 h-4" />
                   Descrição do Projeto
                 </Label>
                 <Textarea
                   id="description"
                   value={formData.description}
-                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      description: e.target.value,
+                    }))
+                  }
                   placeholder="Descreva detalhes do seu projeto, medidas, acabamentos desejados..."
                   className="min-h-[120px] resize-none"
                 />
@@ -258,7 +311,8 @@ Aguardo retorno. Obrigado(a)!`;
               </Button>
 
               <p className="text-sm text-muted-foreground text-center">
-                Ao clicar no botão, você será redirecionado para o WhatsApp com sua mensagem pré-preenchida
+                Ao clicar no botão, você será redirecionado para o WhatsApp com
+                sua mensagem pré-preenchida
               </p>
             </form>
           </CardContent>
